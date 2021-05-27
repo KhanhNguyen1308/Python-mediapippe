@@ -1,18 +1,8 @@
 import numpy as np
+from function import dist, mid_point
 
 
-def dist(p1, p2):
-    a = np.array(p1)
-    b = np.array(p2)
-    return np.linalg.norm(a-b)
-
-
-def mid_point(p1, p2):
-    mp = (int((p1[0]+p2[0])/2), int((p1[1]+p2[1])/2))
-    return mp
-
-
-def head_pose_x(nose, left_eye, right_eye):
+def head_pose_ratio(nose, left_eye, right_eye):
     l_m = mid_point(left_eye[0][0], left_eye[0][3])
     r_m = mid_point(right_eye[0][0], right_eye[0][3])
 
@@ -29,8 +19,11 @@ def head_pose_x(nose, left_eye, right_eye):
 
     ratio_r = dist_r_x / dist_r_y
     ratio_l = dist_l_x / dist_l_y
+    x1 = dist_r_y/dist_l_y
+    x2 = dist_r_x/dist_l_x
+    x3 = dist_l_x/dist_l_y
 
-    return ratio_r, ratio_l
+    return x1, x2, x3
 
 
 def head_pose_y(nose, left_eye, right_eye):

@@ -1,3 +1,19 @@
+def head_pose_status(x1, x2):
+    try:
+        if x1 >= 0.1 and x1 <= 0.4:
+            if x2 >= 0.8 and x2 <= 1.2:
+                pose_status = "Straight"
+        elif x1 < 0.1 or False:
+            if x2 >= 0.8 and x2 <= 1.2:
+                pose_status = "Straight leaning to the Right"
+        elif x1 > 0.4:
+            if x2 >= 0.8 and x2 <= 1.2:
+                pose_status = "Straight leaning to the Left"
+    except:
+        pose_status = 'None Face'
+    return pose_status
+
+
 def head_pose_x_status(ratio_l, ratio_r):
     try:
         if ratio_r >= 1.1 and ratio_l <= 0.7:

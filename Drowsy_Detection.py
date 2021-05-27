@@ -1,13 +1,14 @@
+#!/usr/bin/python3
 import cv2
 import time
 import mediapipe as mp
 from function import draw_point, eye_avg_ratio, put_text
-from head_pose_ratio import head_pose_x, head_pose_y, head_pose_z
+from head_pose_ratio import head_pose_ratio, head_pose_y, head_pose_z
 from head_pose_status import head_pose_x_status, head_pose_y_status, head_pose_z_status, eye_stat
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture('Video/test.mp4')
 pTime = 0
-
+m = 0
 mpDraw = mp.solutions.drawing_utils
 mpFaceMesh = mp.solutions.face_mesh
 faceMesh = mpFaceMesh.FaceMesh()
@@ -26,6 +27,7 @@ blink_perM = 0
 pre_blink = 0
 while True:
     ret, img = cap.read()
+    img = cv2.resize(img, (720, 405))
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     results = faceMesh.process(imgRGB)
     if results:
@@ -44,30 +46,29 @@ while True:
 
 
             nose = face[5]
+
             Left_eye.append([face[249], face[374], face[380], face[382], face[385], face[386]])
             Right_eye.append([face[7], face[145], face[153], face[155], face[158], face[159]])
 
             img = draw_point(img, nose, Left_eye, Right_eye)
             ear = eye_avg_ratio(Left_eye, Right_eye)
-            ratio_r, ratio_l = head_pose_x(nose, Left_eye, Right_eye)
+            x1, x2 = head_pose_ratio(nose, Left_eye, Right_eye)
             head_pose_y_ratio = head_pose_y(nose, Left_eye, Right_eye)
             avg_ratio = head_pose_z(nose, Left_eye, Right_eye)
-
-            print(avg_ratio)
-
-            x_status = head_pose_x_status(ratio_r, ratio_l)
+            print(x1)
             y_status = head_pose_y_status(head_pose_y_ratio)
-
             eye_status, blink, count = eye_stat(ear, count, blink)
         except:
             eye_status = 'None Face'
+            x_status = 'None Face'
             y_status = 'None Face'
             blink = 0
             ear = 0
     cTime = time.time()
     fps = int(1 / (cTime - pTime))
     pTime = cTime
-
+    img = cv2.putText(img, str(m), (10, 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+    m+=1
     text_fps = 'FPS:' + str(fps)
     text_EaR = 'Eye_avg_Ratio: ' + str(round(ear, 2))
     text_Head_pose_y = 'Head_pose: ' + x_status + ' ' + y_status
@@ -83,7 +84,7 @@ while True:
         blink_perM = blink
         pre_blink = blink
         blink = 0
-    key = cv2.waitKey(50)
+    key = cv2.waitKey(1)
     # if t == 300:
     #     cap.release()
     #     break
