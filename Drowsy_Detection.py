@@ -5,7 +5,6 @@ import mediapipe as mp
 from function import draw_point, eye_avg_ratio, put_text
 from head_pose_ratio import head_pose_ratio, head_pose_y, head_pose_z
 from head_pose_status import head_pose_x_status, head_pose_y_status, head_pose_z_status, eye_stat
-
 cap = cv2.VideoCapture(0)
 pTime = 0
 m = 0
@@ -38,18 +37,13 @@ while True:
             for face_lms in results.multi_face_landmarks:
                 if draw:
                     mpDraw.draw_landmarks(img, face_lms, mpFaceMesh.FACE_CONNECTIONS, drawSpec, drawSpec)
-
             for lm in face_lms.landmark:
                 ih, iw, ic = img.shape
                 x, y = int(lm.x * iw), int(lm.y * ih)
                 face.append([x, y])
-
-
             nose = face[5]
-
             Left_eye.append([face[249], face[374], face[380], face[382], face[385], face[386]])
             Right_eye.append([face[7], face[145], face[153], face[155], face[158], face[159]])
-
             img = draw_point(img, nose, Left_eye, Right_eye)
             ear = eye_avg_ratio(Left_eye, Right_eye)
             x1, x2 = head_pose_ratio(nose, Left_eye, Right_eye)
@@ -75,19 +69,14 @@ while True:
     text_ES = 'Eye_Status: ' + eye_status
     text_blink = 'Blink_Num: ' + str(blink)
     text_blink_avg = 'Blink_AVG: ' + str(blink_perM)
-
     img = put_text(img, text_fps, text_EaR, text_ES, text_blink, text_blink_avg, text_Head_pose_y)
     cv2.imshow('results', img)
-    # print(time.time() - start_time)
     if (time.time() - start_time) > 60:
         start_time = time.time()
         blink_perM = blink
         pre_blink = blink
         blink = 0
     key = cv2.waitKey(1)
-    # if t == 300:
-    #     cap.release()
-    #     break
     if key == ord('q'):
         break
 cap.release()
