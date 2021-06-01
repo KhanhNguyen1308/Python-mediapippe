@@ -6,7 +6,7 @@ from function import draw_point, eye_avg_ratio, put_text
 from head_pose_ratio import head_pose_ratio, head_pose_y, head_pose_z
 from head_pose_status import head_pose_x_status, head_pose_y_status, head_pose_z_status, eye_stat
 
-cap = cv2.VideoCapture('Video/test.mp4')
+cap = cv2.VideoCapture(0)
 pTime = 0
 m = 0
 mpDraw = mp.solutions.drawing_utils
