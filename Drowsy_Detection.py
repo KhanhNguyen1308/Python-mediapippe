@@ -49,7 +49,6 @@ while True:
             ear = eye_avg_ratio(Left_eye, Right_eye)
             x1, x2 = head_pose_ratio(nose, Left_eye, Right_eye)
             print(x2)
-            y_status = head_pose_y_status(head_pose_y_ratio)
             eye_status, blink, count = eye_stat(ear, count, blink)
         except:
             eye_status = 'None Face'
