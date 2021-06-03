@@ -1,9 +1,8 @@
-#!/usr/bin/python3
 import cv2
 import time
 import mediapipe as mp
 from function import draw_point, eye_avg_ratio, put_text
-from head_pose_ratio import head_pose_ratio, head_pose_y, head_pose_z
+from head_pose_ratio import head_pose_ratio
 from head_pose_status import head_pose_x_status, head_pose_y_status, head_pose_z_status, eye_stat
 cap = cv2.VideoCapture(0)
 pTime = 0
@@ -31,6 +30,7 @@ while True:
     results = faceMesh.process(imgRGB)
     if results:
         face = []
+        Mount = []
         Left_eye = []
         Right_eye = []
         try:
@@ -44,12 +44,11 @@ while True:
             nose = face[5]
             Left_eye.append([face[249], face[374], face[380], face[382], face[385], face[386]])
             Right_eye.append([face[7], face[145], face[153], face[155], face[158], face[159]])
-            img = draw_point(img, nose, Left_eye, Right_eye)
+            Mount.append([face[308], face[317], face[14], face[87], face[61], face[82], face[13], face[312]])
+            img = draw_point(img, nose, Left_eye, Right_eye, Mount)
             ear = eye_avg_ratio(Left_eye, Right_eye)
             x1, x2 = head_pose_ratio(nose, Left_eye, Right_eye)
-            head_pose_y_ratio = head_pose_y(nose, Left_eye, Right_eye)
-            avg_ratio = head_pose_z(nose, Left_eye, Right_eye)
-            print(x1)
+            print(x2)
             y_status = head_pose_y_status(head_pose_y_ratio)
             eye_status, blink, count = eye_stat(ear, count, blink)
         except:

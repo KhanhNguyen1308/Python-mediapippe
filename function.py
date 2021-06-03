@@ -18,7 +18,7 @@ def dist(p1, p2):
     return np.linalg.norm(a-b)
 
 
-def draw_point(img, nose_list, left_eye_list, right_eye_list):
+def draw_point(img, nose_list, left_eye_list, right_eye_list, mount_list):
     left_eye0 = list2point(left_eye_list[0][0])
     left_eye1 = list2point(left_eye_list[0][1])
     left_eye2 = list2point(left_eye_list[0][2])
@@ -32,6 +32,15 @@ def draw_point(img, nose_list, left_eye_list, right_eye_list):
     right_eye3 = list2point(right_eye_list[0][3])
     right_eye4 = list2point(right_eye_list[0][4])
     right_eye5 = list2point(right_eye_list[0][5])
+
+    mount0 = list2point(mount_list[0][0])
+    mount1 = list2point(mount_list[0][1])
+    mount2 = list2point(mount_list[0][2])
+    mount3 = list2point(mount_list[0][3])
+    mount4 = list2point(mount_list[0][4])
+    mount5 = list2point(mount_list[0][5])
+    mount6 = list2point(mount_list[0][6])
+    mount7 = list2point(mount_list[0][7])
 
     nose = list2point(nose_list)
 
@@ -66,6 +75,15 @@ def draw_point(img, nose_list, left_eye_list, right_eye_list):
     cv2.circle(img, right_eye4, 1, (0, 255, 0), 1)
     cv2.circle(img, right_eye5, 1, (0, 255, 0), 1)
 
+    cv2.circle(img, mount0, 1, (0, 255, 0), 1)
+    cv2.circle(img, mount1, 1, (0, 255, 0), 1)
+    cv2.circle(img, mount2, 1, (0, 255, 0), 1)
+    cv2.circle(img, mount3, 1, (0, 255, 0), 1)
+    cv2.circle(img, mount4, 1, (0, 255, 0), 1)
+    cv2.circle(img, mount5, 1, (0, 255, 0), 1)
+    cv2.circle(img, mount6, 1, (0, 255, 0), 1)
+    cv2.circle(img, mount7, 1, (0, 255, 0), 1)
+
     cv2.line(img, left_eye0, left_eye3, (0, 255, 255), 1)
     cv2.line(img, left_eye5, left_eye1, (0, 255, 255), 1)
     cv2.line(img, left_eye4, left_eye2, (0, 255, 255), 1)
@@ -83,6 +101,11 @@ def draw_point(img, nose_list, left_eye_list, right_eye_list):
     cv2.line(img, r_m, r_m_sym_x, (0, 255, 255), 1)
     cv2.line(img, l_m, l_m_sym_y, (0, 255, 255), 1)
     cv2.line(img, r_m, r_m_sym_y, (0, 255, 255), 1)
+
+    cv2.line(img, mount0, mount4, (0, 255, 255), 1)
+    cv2.line(img, mount1, mount7, (0, 255, 255), 1)
+    cv2.line(img, mount2, mount6, (0, 255, 255), 1)
+    cv2.line(img, mount3, mount5, (0, 255, 255), 1)
 
     return img
 
