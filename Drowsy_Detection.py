@@ -25,7 +25,6 @@ blink_perM = 0
 pre_blink = 0
 while True:
     ret, img = cap.read()
-    img = cv2.resize(img, (720, 405))
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     results = faceMesh.process(imgRGB)
     if results:
@@ -47,7 +46,8 @@ while True:
             Mount.append([face[308], face[317], face[14], face[87], face[61], face[82], face[13], face[312]])
             img = draw_point(img, nose, Left_eye, Right_eye, Mount)
             ear = eye_avg_ratio(Left_eye, Right_eye)
-            x1, x2 = head_pose_ratio(nose, Left_eye, Right_eye)
+            print(ear)
+            x1, x2, x3, x4 = head_pose_ratio(nose, Left_eye, Right_eye)
             print(x2)
             eye_status, blink, count = eye_stat(ear, count, blink)
         except:
