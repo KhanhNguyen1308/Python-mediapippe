@@ -34,12 +34,11 @@ while True:
         Right_eye = []
         try:
             for face_lms in results.multi_face_landmarks:
-                if draw:
-                    mpDraw.draw_landmarks(img, face_lms, mpFaceMesh.FACE_CONNECTIONS, drawSpec, drawSpec)
-            for lm in face_lms.landmark:
-                ih, iw, ic = img.shape
-                x, y = int(lm.x * iw), int(lm.y * ih)
-                face.append([x, y])
+                for lm in face_lms.landmark:
+                    ih, iw, ic = img.shape
+                    x, y = int(lm.x * iw), int(lm.y * ih)
+                    face.append([x, y])
+            
             nose = face[5]
             Left_eye.append([face[249], face[374], face[380], face[382], face[385], face[386]])
             Right_eye.append([face[7], face[145], face[153], face[155], face[158], face[159]])
@@ -49,6 +48,7 @@ while True:
             print(ear)
             x1, x2, x3, x4 = head_pose_ratio(nose, Left_eye, Right_eye)
             print(x2)
+            head_status = head_pose_status(x1, x2)
             eye_status, blink, count = eye_stat(ear, count, blink)
         except:
             eye_status = 'None Face'
@@ -63,11 +63,11 @@ while True:
     m+=1
     text_fps = 'FPS:' + str(fps)
     text_EaR = 'Eye_avg_Ratio: ' + str(round(ear, 2))
-    text_Head_pose_y = 'Head_pose: ' + x_status + ' ' + y_status
+    text_Head_pose = 'Head_pose: ' + head_status
     text_ES = 'Eye_Status: ' + eye_status
     text_blink = 'Blink_Num: ' + str(blink)
     text_blink_avg = 'Blink_AVG: ' + str(blink_perM)
-    img = put_text(img, text_fps, text_EaR, text_ES, text_blink, text_blink_avg, text_Head_pose_y)
+    img = put_text(img, text_fps, text_EaR, text_ES, text_blink, text_blink_avg, text_Head_pose)
     cv2.imshow('results', img)
     if (time.time() - start_time) > 60:
         start_time = time.time()
