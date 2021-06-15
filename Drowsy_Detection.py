@@ -4,7 +4,7 @@ import mediapipe as mp
 from function import draw_point, eye_avg_ratio, put_text
 from head_pose_ratio import head_pose_ratio
 from head_pose_status import head_pose_status, eye_stat
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture('Video/test_1406.mp4')
 pTime = 0
 m = 0
 mpDraw = mp.solutions.drawing_utils
@@ -45,9 +45,8 @@ while True:
             Mount.append([face[308], face[317], face[14], face[87], face[61], face[82], face[13], face[312]])
             img = draw_point(img, nose, Left_eye, Right_eye, Mount)
             ear = eye_avg_ratio(Left_eye, Right_eye)
-            print(ear)
             x1, x2, x3, x4 = head_pose_ratio(nose, Left_eye, Right_eye)
-            print(x2)
+            print(round(x1,3))
             head_status = head_pose_status(x1, x2)
             eye_status, blink, count = eye_stat(ear, count, blink)
         except:
@@ -75,6 +74,8 @@ while True:
         pre_blink = blink
         blink = 0
     key = cv2.waitKey(1)
+    if m == 4000:
+        break
     if key == ord('q'):
         break
 cap.release()
