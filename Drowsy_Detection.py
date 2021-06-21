@@ -3,7 +3,7 @@ import time
 import mediapipe as mp
 from function import draw_point, eye_avg_ratio, put_text
 from head_pose_ratio import head_pose_ratio
-from head_pose_status import head_pose_status, eye_stat
+from Angle_head_pose_ratio import head_pose_status, eye_stat
 cap = cv2.VideoCapture('Video/test_1406.mp4')
 pTime = 0
 m = 0
@@ -15,6 +15,7 @@ eye_status = ''
 x_status = ''
 y_status = ''
 z_status = ''
+head_status = ''
 draw = False
 t = 0
 ear = 0
@@ -45,10 +46,31 @@ while True:
             Mount.append([face[308], face[317], face[14], face[87], face[61], face[82], face[13], face[312]])
             img = draw_point(img, nose, Left_eye, Right_eye, Mount)
             ear = eye_avg_ratio(Left_eye, Right_eye)
-            x1, x2, x3, x4 = head_pose_ratio(nose, Left_eye, Right_eye)
-            print(round(x1,3))
-            head_status = head_pose_status(x1, x2)
+            x1, x2, x3, x4, x5, x6 = head_pose_ratio(nose, Left_eye, Right_eye)
+            img = cv2.putText(img,str(x5),(nose[0]-20, nose[1]),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+            img = cv2.putText(img,str(x6),(nose[0]+20, nose[1]),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+            z = str(x5)+ " " + str(x6)+ " " + str(round(x2,3))
+            
+            if m >= 780:
+                print(z)
+            m += 1
+            if key == ord('a'):
+                z = z + " thang"
+                print(z)
+            if key == ord('s'):
+                z = z + " cui"
+                print(z)
+            if key == ord('d'):
+                z = z + " nghieng trai"
+                print(z)
+            if key == ord('f'):
+                z = z + " nghieng phai"
+                print(z)
+            head_status, mode = head_pose_status(x5, x6, x2)
             eye_status, blink, count = eye_stat(ear, count, blink)
+            if head_status == 'WRONG DATA':
+                print(z+" "+str(m))
+                
         except:
             eye_status = 'None Face'
             x_status = 'None Face'
@@ -59,7 +81,6 @@ while True:
     fps = int(1 / (cTime - pTime))
     pTime = cTime
     img = cv2.putText(img, str(m), (10, 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-    m+=1
     text_fps = 'FPS:' + str(fps)
     text_EaR = 'Eye_avg_Ratio: ' + str(round(ear, 2))
     text_Head_pose = 'Head_pose: ' + head_status
@@ -73,8 +94,8 @@ while True:
         blink_perM = blink
         pre_blink = blink
         blink = 0
-    key = cv2.waitKey(1)
-    if m == 4000:
+    key = cv2.waitKey(10)
+    if m == 900:
         break
     if key == ord('q'):
         break
