@@ -51,9 +51,9 @@ while True:
             img = cv2.putText(img,str(x6),(nose[0]+20, nose[1]),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
             z = str(x5)+ " " + str(x6)+ " " + str(round(x2,3))
             
-            if m >= 780:
-                print(z)
-            m += 1
+            # if m >= 780:
+            #     print(z)
+            
             if key == ord('a'):
                 z = z + " thang"
                 print(z)
@@ -66,10 +66,13 @@ while True:
             if key == ord('f'):
                 z = z + " nghieng phai"
                 print(z)
+            
             head_status, mode = head_pose_status(x5, x6, x2)
+            print(mode/10)
             eye_status, blink, count = eye_stat(ear, count, blink)
             if head_status == 'WRONG DATA':
                 print(z+" "+str(m))
+            m += 1
                 
         except:
             eye_status = 'None Face'
@@ -95,8 +98,8 @@ while True:
         pre_blink = blink
         blink = 0
     key = cv2.waitKey(10)
-    if m == 900:
-        break
+    # if m == 900:
+    #     break
     if key == ord('q'):
         break
 cap.release()

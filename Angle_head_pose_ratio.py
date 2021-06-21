@@ -5,12 +5,7 @@ def head_pose_status(x5, x6, x2):
                 if x2 >=0.8 and x2 <= 1.3:
                     pose_status = "Straight"
                     mode = 0
-                elif x2 > 1.3:
-                    pose_status = "WRONG DATA"
-                    mode = 9
-                elif x2 < 0.8:
-                    pose_status = "WRONG DATA"
-                    mode = 9
+                
             elif x6 > 34:
                 if x2 < 0.8:
                     pose_status = "Leaning to the Right"
