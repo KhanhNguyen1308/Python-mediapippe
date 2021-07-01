@@ -5,6 +5,7 @@ from function import draw_point, eye_avg_ratio, put_text
 from head_pose_ratio import head_pose_ratio
 from Angle_head_pose_ratio import head_pose_status, eye_stat
 cap = cv2.VideoCapture('Video/test_1406.mp4')
+# cap = cv2.VideoCapture(0)
 pTime = 0
 m = 0
 mpDraw = mp.solutions.drawing_utils
@@ -44,42 +45,19 @@ while True:
             Left_eye.append([face[249], face[374], face[380], face[382], face[385], face[386]])
             Right_eye.append([face[7], face[145], face[153], face[155], face[158], face[159]])
             Mount.append([face[308], face[317], face[14], face[87], face[61], face[82], face[13], face[312]])
-            img = draw_point(img, nose, Left_eye, Right_eye, Mount)
+            #img = draw_point(img, nose, Left_eye, Right_eye, Mount)
             ear = eye_avg_ratio(Left_eye, Right_eye)
             x1, x2, x3, x4, x5, x6 = head_pose_ratio(nose, Left_eye, Right_eye)
             img = cv2.putText(img,str(x5),(nose[0]-20, nose[1]),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
             img = cv2.putText(img,str(x6),(nose[0]+20, nose[1]),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
-            z = str(x5)+ " " + str(x6)+ " " + str(round(x2,3))
-            
-            # if m >= 780:
-            #     print(z)
-            
-            if key == ord('a'):
-                z = z + " thang"
-                print(z)
-            if key == ord('s'):
-                z = z + " cui"
-                print(z)
-            if key == ord('d'):
-                z = z + " nghieng trai"
-                print(z)
-            if key == ord('f'):
-                z = z + " nghieng phai"
-                print(z)
-            
             head_status, mode = head_pose_status(x5, x6, x2)
-            print(mode/10)
-            eye_status, blink, count = eye_stat(ear, count, blink)
-            if head_status == 'WRONG DATA':
-                print(z+" "+str(m))
+            eye_status, blink, count = eye_stat(ear, count, blink, mode)
             m += 1
                 
         except:
             eye_status = 'None Face'
             x_status = 'None Face'
             y_status = 'None Face'
-            blink = 0
-            ear = 0
     cTime = time.time()
     fps = int(1 / (cTime - pTime))
     pTime = cTime
