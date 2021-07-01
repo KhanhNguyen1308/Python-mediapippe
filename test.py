@@ -41,17 +41,17 @@ while True:
                 face.append([x, y])
             
         nose = face[5]
-        print(m)
         Left_eye.append([face[249], face[374], face[380], face[382], face[385], face[386]])
         Right_eye.append([face[7], face[145], face[153], face[155], face[158], face[159]])
         Mount.append([face[308], face[317], face[14], face[87], face[61], face[82], face[13], face[312]])
         #img = draw_point(img, nose, Left_eye, Right_eye, Mount)
         ear = eye_avg_ratio(Left_eye, Right_eye)
         x1, x2, x3, x4, x5, x6 = head_pose_ratio(nose, Left_eye, Right_eye)
-        print("x1:"+str(x1)+ " " + "x2:"+str(x2)+ " " + "x3:"+str(x3)+ " " + "x4:"+str(x4)+ " " + "x5:"+str(x5)+ " " + "x6:"+str(x6))
+        # print("x1:"+str(x1)+ " " + "x2:"+str(x2)+ " " + "x3:"+str(x3)+ " " + "x4:"+str(x4)+ " " + "x5:"+str(x5)+ " " + "x6:"+str(x6))
         img = cv2.putText(img,str(x5),(nose[0]-20, nose[1]),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
         img = cv2.putText(img,str(x6),(nose[0]+20, nose[1]),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
         head_status, mode = head_pose_status(x5, x6, x2)
+        print(mode/10)
         eye_status, blink, count = eye_stat(ear, count, blink, mode)
         m += 1
                 

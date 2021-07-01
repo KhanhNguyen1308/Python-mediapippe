@@ -84,6 +84,14 @@ def draw_point(img, nose_list, left_eye_list, right_eye_list, mount_list):
     cv2.circle(img, mount6, 1, (0, 255, 0), 1)
     cv2.circle(img, mount7, 1, (0, 255, 0), 1)
 
+    cv2.line(img, left_eye0, left_eye3, (0, 255, 255), 1)
+    cv2.line(img, left_eye5, left_eye1, (0, 255, 255), 1)
+    cv2.line(img, left_eye4, left_eye2, (0, 255, 255), 1)
+
+    cv2.line(img, right_eye0, right_eye3, (0, 255, 255), 1)
+    cv2.line(img, right_eye5, right_eye1, (0, 255, 255), 1)
+    cv2.line(img, right_eye4, right_eye2, (0, 255, 255), 1)
+
     cv2.line(img, nose, l_m_sym_x, (0, 255, 255), 1)
     cv2.line(img, nose, r_m_sym_x, (0, 255, 255), 1)
     cv2.line(img, nose, l_m_sym_y, (0, 255, 255), 1)
