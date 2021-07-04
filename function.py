@@ -138,3 +138,9 @@ def put_text(img, text_fps, text_ear, text_es, text_blink, text_blink_avg, text_
     cv2.putText(img, text_head_pose_y, (10, 120), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
     return img
 
+def head_pose(results_pose, img, pose_xy):
+    for pose_lms in results_pose.pose_landmarks:
+                for lm in pose_lms.landmark:
+                    ih, iw = img.shape
+                    x, y = int(lm.x * iw), int(lm.y * ih)
+                    pose_xy.append([x, y])

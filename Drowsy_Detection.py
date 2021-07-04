@@ -1,8 +1,9 @@
 import cv2
 import time
 import mediapipe as mp
-from function import draw_point, eye_avg_ratio, put_text
+from threading import Thread
 from head_pose_ratio import head_pose_ratio
+from function import draw_point, eye_avg_ratio, put_text
 from Angle_head_pose_ratio import head_pose_status, eye_stat
 
 cap = cv2.VideoCapture('Video/test_1406.mp4')
@@ -14,7 +15,6 @@ status = ''
 mpDraw = mp.solutions.drawing_utils
 mpFaceMesh = mp.solutions.face_mesh
 faceMesh = mpFaceMesh.FaceMesh()
-drawSpec = mpDraw.DrawingSpec(thickness=1, circle_radius=2)
 eye_status = ''
 x_status = ''
 y_status = ''
@@ -32,6 +32,7 @@ while True:
     ret, img = cap.read()
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     results = faceMesh.process(imgRGB)
+    print(results.multi_face_landmarks)
     if results:
         face = []
         Mount = []
@@ -40,7 +41,7 @@ while True:
         try:
             for face_lms in results.multi_face_landmarks:
                 for lm in face_lms.landmark:
-                    ih, iw, ic = img.shape
+                    ih, iw= img.shape
                     x, y = int(lm.x * iw), int(lm.y * ih)
                     face.append([x, y])
 
