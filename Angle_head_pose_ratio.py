@@ -1,10 +1,10 @@
 def head_pose_status(x5, x6, x2):
     try:
         if x5 > 60:
-            if x6 >= 32:
+            if x6 >= 40:
                 pose_status = "Bend down"
                 mode = 1
-            elif x6 < 32:
+            elif x6 < 40:
                 if x2 <= 1.3:
                     pose_status = "Straight"
                     mode = 0
@@ -12,7 +12,7 @@ def head_pose_status(x5, x6, x2):
                     pose_status = "Leaning to the Left"
                     mode = 3
         elif 40 <= x5 <= 60:
-            if x6 <= 34:
+            if x6 <= 40:
                 if 0.7 <= x2 <= 1.3:
                     pose_status = "Straight"
                     mode = 0
@@ -22,7 +22,7 @@ def head_pose_status(x5, x6, x2):
                 elif x2 > 1.3:
                     pose_status = "Ben down, leaning to the right"
                     mode = 1
-            elif x6 > 34:
+            elif x6 > 40:
                 if x2 < 0.8:
                     pose_status = "Leaning to the Right"
                     mode = 2
@@ -57,7 +57,7 @@ def head_pose_status(x5, x6, x2):
 def eye_stat(eye_avg_ratio, count, blink, mode):
     try:
         if mode == 0:
-            if eye_avg_ratio <= 0.48:
+            if eye_avg_ratio <= 0.485:
                 eye_status = 'Close'
                 count += 1
             else:
@@ -66,7 +66,7 @@ def eye_stat(eye_avg_ratio, count, blink, mode):
                     blink += 1
                 count = 0
         elif mode == 1:
-            if eye_avg_ratio <= 0.45:
+            if eye_avg_ratio <= 0.465:
                 eye_status = 'Close'
                 count += 1
             else:

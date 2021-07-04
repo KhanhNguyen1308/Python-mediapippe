@@ -55,7 +55,7 @@ while True:
             img = cv2.putText(img, str(x6), (nose[0] + 20, nose[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
             head_status, mode = head_pose_status(x5, x6, x2)
             eye_status, blink, count = eye_stat(ear, count, blink, mode)
-            if mode == 0:
+            if mode == 1:
                 print(round(ear, 3))
 
             if mode == 9:
