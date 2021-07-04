@@ -1,5 +1,6 @@
 # Python mediapipe
-<h5>git push 'remote_name' 'branch_name'</h5>
-<h5>git remote add origin 'your_url_name'</h5>
-<h5>git commit -m 'your message'</h5>
-<h5>git push -u origin main</h5>
+<h5>opencv & mediapipe</h5>
+<h5>Raspberry Pi 4</h5>
+<h5>Ubuntu 20.04</h5>
+<h5>Python 3.8</h5>
+<h5></h5>
