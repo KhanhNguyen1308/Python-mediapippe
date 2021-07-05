@@ -17,7 +17,6 @@ mpFaceMesh = mp.solutions.face_mesh
 mpPose = mp.solutions.pose
 faceMesh = mpFaceMesh.FaceMesh()
 drawSpec = mpDraw.DrawingSpec(thickness=1, circle_radius=2)
-pose = mpPose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)
 eye_status = ''
 x_status = ''
 y_status = ''
@@ -35,7 +34,6 @@ while True:
     ret, img = cap.read()
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     results = faceMesh.process(imgRGB)
-    results_pose = pose.process(imgRGB)
     if results:
         face = []
         Mount = []
@@ -43,10 +41,6 @@ while True:
         Left_eye = []
         Right_eye = []
         try:
-            t = Thread(target=head_pose, args=(results_pose, img, pose_xy))
-            t.deamon = True
-            t.start()
-            print(pose_xy)
             for face_lms in results.multi_face_landmarks:
                 for lm in face_lms.landmark:
                     ih, iw, ic = img.shape

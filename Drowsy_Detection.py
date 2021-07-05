@@ -15,6 +15,7 @@ status = ''
 mpDraw = mp.solutions.drawing_utils
 mpFaceMesh = mp.solutions.face_mesh
 faceMesh = mpFaceMesh.FaceMesh()
+drawSpec = mpDraw.DrawingSpec(thickness=1, circle_radius=2)
 eye_status = ''
 x_status = ''
 y_status = ''
@@ -30,9 +31,9 @@ blink_perM = 0
 pre_blink = 0
 while True:
     ret, img = cap.read()
+    ih, iw = img.shape[0], img.shape[1]
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     results = faceMesh.process(imgRGB)
-    print(results.multi_face_landmarks)
     if results:
         face = []
         Mount = []
@@ -41,11 +42,11 @@ while True:
         try:
             for face_lms in results.multi_face_landmarks:
                 for lm in face_lms.landmark:
-                    ih, iw= img.shape
                     x, y = int(lm.x * iw), int(lm.y * ih)
                     face.append([x, y])
 
             nose = face[5]
+            print(nose)
             Left_eye.append([face[249], face[374], face[380], face[382], face[385], face[386]])
             Right_eye.append([face[7], face[145], face[153], face[155], face[158], face[159]])
             Mount.append([face[308], face[317], face[14], face[87], face[61], face[82], face[13], face[312]])
@@ -86,7 +87,7 @@ while True:
         blink_perM = blink
         pre_blink = blink
         blink = 0
-    key = cv2.waitKey(10)
+    key = cv2.waitKey(1)
     # if m == 900:
     #     break
     if key == ord('q'):
