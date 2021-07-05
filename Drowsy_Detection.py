@@ -46,7 +46,6 @@ while True:
                     face.append([x, y])
 
             nose = face[5]
-            print(nose)
             Left_eye.append([face[249], face[374], face[380], face[382], face[385], face[386]])
             Right_eye.append([face[7], face[145], face[153], face[155], face[158], face[159]])
             Mount.append([face[308], face[317], face[14], face[87], face[61], face[82], face[13], face[312]])
