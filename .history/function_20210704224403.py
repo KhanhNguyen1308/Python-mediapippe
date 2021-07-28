@@ -144,8 +144,3 @@ def head_pose(results_pose, img, pose_xy):
                     ih, iw = img.shape
                     x, y = int(lm.x * iw), int(lm.y * ih)
                     pose_xy.append([x, y])
-
-
-def predict(X, model, y_predict):
-    y = model.predict(X)
-    y_predict.put(y)

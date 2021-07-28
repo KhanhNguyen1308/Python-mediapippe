@@ -20,6 +20,7 @@ m = 0
 status = ''
 mpDraw = mp.solutions.drawing_utils
 mpFaceMesh = mp.solutions.face_mesh
+mpPose = mp.solutions.pose
 faceMesh = mpFaceMesh.FaceMesh()
 drawSpec = mpDraw.DrawingSpec(thickness=1, circle_radius=2)
 eye_status = ''
@@ -27,7 +28,6 @@ x_status = ''
 y_status = ''
 z_status = ''
 head_status = ''
-Drowsy_mode = ''
 draw = False
 t = 0
 ear = 0
@@ -38,17 +38,18 @@ blink_perM = 0
 pre_blink = 0
 while True:
     ret, img = cap.read()
-    ih, iw = img.shape[0], img.shape[1]
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     results = faceMesh.process(imgRGB)
     if results:
         face = []
         Mount = []
+        pose_xy = []
         Left_eye = []
         Right_eye = []
         try:
             for face_lms in results.multi_face_landmarks:
                 for lm in face_lms.landmark:
+                    ih, iw, ic = img.shape
                     x, y = int(lm.x * iw), int(lm.y * ih)
                     face.append([x, y])
 
@@ -61,6 +62,7 @@ while True:
             x1, x2, x3, x4, x5, x6 = head_pose_ratio(nose, Left_eye, Right_eye)
             input_shape = input_details[0]['shape']
             input_data = np.array((x1, x2, x3, x4, x5, x6), dtype=np.float32)
+            print(input_data)
             interpreter.set_tensor(input_details[0]['index'], input_data)
             interpreter.invoke()
             output_data = interpreter.get_tensor(output_details[0]['index'])
@@ -72,8 +74,9 @@ while True:
             if mode == 1:
                 print(round(ear, 3))
 
-            Drowsy_mode = sleep_mode(mode, ear, blink)
-            
+            if mode == 9:
+                print("x1:"+str(x1)+ " " + "x2:"+str(x2)+ " " + "x3:"+str(x3)+ " " + "x4:"+str(x4)+ " " + "x5:"+str(x5)+ " " + "x6:"+str(x6))
+
             m += 1
 
         except:
@@ -98,7 +101,7 @@ while True:
         blink_perM = blink
         pre_blink = blink
         blink = 0
-    key = cv2.waitKey(1)
+    key = cv2.waitKey(10)
     # if m == 900:
     #     break
     if key == ord('q'):

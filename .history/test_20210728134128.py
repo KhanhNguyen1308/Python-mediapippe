@@ -6,5 +6,5 @@ x4=0.783
 x5=51
 x6=20
 y=0
-X = np.array((x1,x2,x3,x4,x5,x6))
+X = [x1,x2,x3,x4,x5,x6]
 print(X)

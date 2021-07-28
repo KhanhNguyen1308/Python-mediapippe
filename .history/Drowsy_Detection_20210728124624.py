@@ -63,8 +63,6 @@ while True:
             input_data = np.array((x1, x2, x3, x4, x5, x6), dtype=np.float32)
             interpreter.set_tensor(input_details[0]['index'], input_data)
             interpreter.invoke()
-            output_data = interpreter.get_tensor(output_details[0]['index'])
-            print(output_data)
             img = cv2.putText(img, str(x5), (nose[0] - 20, nose[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
             img = cv2.putText(img, str(x6), (nose[0] + 20, nose[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
             head_status, mode = head_pose_status(x5, x6, x2)

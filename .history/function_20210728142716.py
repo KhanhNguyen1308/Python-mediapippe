@@ -149,3 +149,4 @@ def head_pose(results_pose, img, pose_xy):
 def predict(X, model, y_predict):
     y = model.predict(X)
     y_predict.put(y)
+    print(int(y))

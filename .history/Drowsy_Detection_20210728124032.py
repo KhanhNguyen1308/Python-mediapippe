@@ -1,17 +1,13 @@
 import cv2
 import time
-import numpy as np
 import mediapipe as mp
-import tensorflow as tf
+import tflite_runtime.interpreter as tflite
 from threading import Thread
 from head_pose_ratio import head_pose_ratio
 from function import draw_point, eye_avg_ratio, put_text
 from Angle_head_pose_ratio import head_pose_status, eye_stat
 from mode import sleep_mode
-interpreter = tf.lite.Interpreter('model.tflite')
-interpreter.allocate_tensors()
-input_details = interpreter.get_input_details()
-output_details = interpreter.get_output_details()
+
 cap = cv2.VideoCapture('Video/test_1406.mp4')
 # cap = cv2.VideoCapture(0)
 pTime = 0
@@ -59,12 +55,6 @@ while True:
             img = draw_point(img, nose, Left_eye, Right_eye, Mount)
             ear = eye_avg_ratio(Left_eye, Right_eye)
             x1, x2, x3, x4, x5, x6 = head_pose_ratio(nose, Left_eye, Right_eye)
-            input_shape = input_details[0]['shape']
-            input_data = np.array((x1, x2, x3, x4, x5, x6), dtype=np.float32)
-            interpreter.set_tensor(input_details[0]['index'], input_data)
-            interpreter.invoke()
-            output_data = interpreter.get_tensor(output_details[0]['index'])
-            print(output_data)
             img = cv2.putText(img, str(x5), (nose[0] - 20, nose[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
             img = cv2.putText(img, str(x6), (nose[0] + 20, nose[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
             head_status, mode = head_pose_status(x5, x6, x2)
