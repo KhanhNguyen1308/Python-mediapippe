@@ -10,53 +10,9 @@ from head_pose_ratio import head_pose_ratio
 from function import draw_point, eye_avg_ratio, put_text, predict
 from Angle_head_pose_ratio import head_pose_status, eye_stat
 from mode import sleep_mode
-<<<<<<< HEAD
-class VideoStream:
-    """Camera object that controls video streaming"""
-    def __init__(self,resolution=(1080,720),framerate=30):
-        # Initialize the PiCamera and the camera image stream
-        self.stream = cv2.VideoCapture(0)
-        ret = self.stream.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
-            
-        # Read first frame from the stream
-        (self.grabbed, self.frame) = self.stream.read()
-
-	# Variable to control when the camera is stopped
-        self.stopped = False
-
-    def start(self):
-	# Start the thread that reads frames from the video stream
-        Thread(target=self.update,args=()).start()
-        return self
-
-    def update(self):
-        # Keep looping indefinitely until the thread is stopped
-        while True:
-            # If the camera is stopped, stop the thread
-            if self.stopped:
-                # Close camera resources
-                self.stream.release()
-                return
-
-            # Otherwise, grab the next frame from the stream
-            (self.grabbed, self.frame) = self.stream.read()
-
-    def read(self):
-	# Return the most recent frame
-        return self.frame
-
-    def stop(self):
-	# Indicate that the camera and thread should be stopped
-        self.stopped = True
-
-
-
-cap = cv2.VideoCapture(0)
-=======
 model = keras.models.load_model("keras_model.h5")
 cap = cv2.VideoCapture('Video/test_1406.mp4')
 # cap = cv2.VideoCapture(0)
->>>>>>> e6957c5ecca9f43cc99051af76e29c46a26cd049
 pTime = 0
 time_active = 0
 m = 0
@@ -104,6 +60,11 @@ while True:
             img = draw_point(img, nose, Left_eye, Right_eye, Mount)
             ear = eye_avg_ratio(Left_eye, Right_eye)
             x1, x2, x3, x4, x5, x6 = head_pose_ratio(nose, Left_eye, Right_eye)
+            X = np.array((x1,x2,x3,x4,x5,x6))
+            X = np.expand_dims(X, axis=0)
+            Thread(target=predict, args=(X,model, y_predict)).start()
+            y = int(y_predict.get()[0][0])
+            print(y)
             img = cv2.putText(img, str(x5), (nose[0] - 20, nose[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
             img = cv2.putText(img, str(x6), (nose[0] + 20, nose[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
             head_status, mode = head_pose_status(x5, x6, x2)

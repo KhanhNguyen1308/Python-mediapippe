@@ -67,7 +67,6 @@ def eye_stat(eye_avg_ratio, count, blink, mode):
                 count = 0
         elif mode == 1:
             eye_status = ''
-            count +=1
         elif mode == 2:
             if eye_avg_ratio <= 0.6:
                 eye_status = 'Close'
