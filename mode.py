@@ -4,4 +4,6 @@ def sleep_mode(mode, ear, blink, count):
         status = 'Normal'
         if count >= 25:
             status = 'Danger'
+    else:
+        status = 'Normal'
     return status
