@@ -3,24 +3,19 @@ import time
 import numpy as np
 import mediapipe as mp
 import tensorflow as tf
-from queue import Queue
-from tensorflow import keras
 from threading import Thread
 from head_pose_ratio import head_pose_ratio
-from function import draw_point, eye_avg_ratio, put_text, predict
+from function import draw_point, eye_avg_ratio, put_text
 from Angle_head_pose_ratio import head_pose_status, eye_stat
 from mode import sleep_mode
-model = keras.models.load_model("keras_model.h5")
 cap = cv2.VideoCapture('Video/test_1406.mp4')
 # cap = cv2.VideoCapture(0)
 pTime = 0
 time_active = 0
 m = 0
 status = ''
-y_predict = Queue()
 mpDraw = mp.solutions.drawing_utils
 mpFaceMesh = mp.solutions.face_mesh
-mpPose = mp.solutions.pose
 faceMesh = mpFaceMesh.FaceMesh()
 drawSpec = mpDraw.DrawingSpec(thickness=1, circle_radius=2)
 eye_status = ''
@@ -28,6 +23,7 @@ x_status = ''
 y_status = ''
 z_status = ''
 head_status = ''
+Drowsy_mode = ''
 draw = False
 t = 0
 ear = 0
@@ -38,18 +34,17 @@ blink_perM = 0
 pre_blink = 0
 while True:
     ret, img = cap.read()
+    ih, iw = img.shape[0], img.shape[1]
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     results = faceMesh.process(imgRGB)
     if results:
         face = []
         Mount = []
-        pose_xy = []
         Left_eye = []
         Right_eye = []
         try:
             for face_lms in results.multi_face_landmarks:
                 for lm in face_lms.landmark:
-                    ih, iw, ic = img.shape
                     x, y = int(lm.x * iw), int(lm.y * ih)
                     face.append([x, y])
 
@@ -60,21 +55,14 @@ while True:
             img = draw_point(img, nose, Left_eye, Right_eye, Mount)
             ear = eye_avg_ratio(Left_eye, Right_eye)
             x1, x2, x3, x4, x5, x6 = head_pose_ratio(nose, Left_eye, Right_eye)
-            X = np.array((x1,x2,x3,x4,x5,x6))
-            X = np.expand_dims(X, axis=0)
-            Thread(target=predict, args=(X,model, y_predict)).start()
-            y = int(y_predict.get()[0][0])
-            print(y)
             img = cv2.putText(img, str(x5), (nose[0] - 20, nose[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
             img = cv2.putText(img, str(x6), (nose[0] + 20, nose[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
             head_status, mode = head_pose_status(x5, x6, x2)
+            z = head_status + " " + count
+            print(z)
             eye_status, blink, count = eye_stat(ear, count, blink, mode)
-            if mode == 1:
-                print(round(ear, 3))
-
-            if mode == 9:
-                print("x1:"+str(x1)+ " " + "x2:"+str(x2)+ " " + "x3:"+str(x3)+ " " + "x4:"+str(x4)+ " " + "x5:"+str(x5)+ " " + "x6:"+str(x6))
-
+            Drowsy_mode = sleep_mode(mode, ear, blink, count)
+            print(Drowsy_mode)
             m += 1
 
         except:
@@ -99,7 +87,7 @@ while True:
         blink_perM = blink
         pre_blink = blink
         blink = 0
-    key = cv2.waitKey(10)
+    key = cv2.waitKey(1)
     # if m == 900:
     #     break
     if key == ord('q'):

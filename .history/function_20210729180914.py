@@ -137,7 +137,7 @@ def put_text(img, text_fps, text_ear, text_es, text_blink, text_blink_avg, text_
     cv2.putText(img, text_blink_avg, (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
     cv2.putText(img, text_head_pose_y, (10, 120), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
     if color == (0 , 0, 255):
-        cv2.putText(img, 'DROWSY', (150, 200), cv2.FONT_HERSHEY_SIMPLEX, 2, color, 2)
+        cv2.putText(img, 'DROWSY', (150, 200), cv2.FONT_HERSHEY_SIMPLEX, 10, color, 2)
     return img
 
 def head_pose(results_pose, img, pose_xy):
